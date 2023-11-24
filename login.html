@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        * {
+            background-color: #FAF8EF;
+            color: #776E65;
+            margin: 0 auto;
+            margin-top: 10px;
+            text-align: center;
+            font-size: 40px;
+        }
+        :not(h1, a) {
+            font-size: 15px;
+        }
+        a{
+            font-size: 20px;
+        }
+        input {
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Login Page</h1>
+    <form action="/login" method="post">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+        <br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        <br>
+        <button type="submit">Login</button>
+    </form>
+    <a href="/signup">signup page</a> <br>
+    <a href="/">back to gamepage</a>
+</body>
+
+</html>

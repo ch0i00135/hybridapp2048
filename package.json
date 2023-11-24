@@ -1,6 +1,8 @@
 {
   "dependencies": {
-    "express": "^4.18.2"
+    "cookie-parser": "^1.4.6",
+    "express": "^4.18.2",
+    "fs": "^0.0.1-security"
   },
   "scripts": {
     "start": "node server.js"
@@ -8,8 +10,7 @@
   "name": "2048",
   "version": "1.0.0",
   "description": "ddd",
-  "main": "app.js",
-  "devDependencies": {},
+  "main": "server.js",
   "repository": {
     "type": "git",
     "url": "github.com/ch0i00135/hybridapp2048"
