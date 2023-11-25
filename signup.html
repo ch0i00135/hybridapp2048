@@ -6,22 +6,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Signup</title>
     <style>
-        *{
+        * {
             background-color: #FAF8EF;
             color: #776E65;
-            margin: 0 auto ;
+            margin: 0 auto;
             margin-top: 10px;
             text-align: center;
             font-size: 40px;
         }
-        :not(h1, a){      
+
+        :not(h1, a) {
             font-size: 15px;
         }
-        a{
+
+        a {
             font-size: 20px;
         }
-        input{
+
+        input {
             text-align: left;
+        }
+
+        button {
+            width: 100px;
+            height: 30px;
         }
     </style>
 </head>
@@ -29,7 +37,7 @@
 <body>
     <div>
         <h1>Signup Page</h1>
-        <form action="/signup" method="post">
+        <form id="signupform">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required>
             <br>
@@ -38,23 +46,33 @@
             <br>
             <button type="submit">Signup</button>
         </form>
-        <a href="/login">login page</a> <br>
+        <p id="error"></p>
         <a href="/">back to gamepage</a>
     </div>
-    
+
     <script>
-        function handleSignup() {
-            // 서버에서 전달된 에러 메시지 가져오기
-            const errorMessage = document.getElementById('error-message').innerText;
-        
-            // 에러 메시지가 있다면 alert로 표시하고 가입을 막음
-            if (errorMessage) {
-              alert(errorMessage);
-              return false; // 가입 막음
-            }
-        
-            return true; // 가입 허용
-        }
+        document.getElementById("signupform").addEventListener("submit", function (event) {
+            event.preventDefault();
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            fetch('/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username, password }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if(data.success){
+                        window.location.replace('http://localhost:3000');
+                    } else{
+                        document.getElementById('error').textContent = '중복된 Username입니다.';
+                    }
+                })
+                .catch(error => console.error(error));
+        });
     </script>
 </body>
 

@@ -14,31 +14,62 @@
             text-align: center;
             font-size: 40px;
         }
+
         :not(h1, a) {
             font-size: 15px;
         }
-        a{
+
+        a {
             font-size: 20px;
         }
+
         input {
             text-align: left;
+        }
+
+        button {
+            width: 100px;
+            height: 30px;
         }
     </style>
 </head>
 
 <body>
     <h1>Login Page</h1>
-    <form action="/login" method="post">
+    <form id="loginForm">
         <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
-        <br>
+        <input type="text" id="username" name="username" required><br>
         <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
-        <br>
-        <button type="submit">Login</button>
+        <input type="password" id="password" name="password" required><br>
+        <input type="submit" value="login">
     </form>
-    <a href="/signup">signup page</a> <br>
+    <p id="result"></p>
+    <a href="/signup">go to signup page</a> <br>
     <a href="/">back to gamepage</a>
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            fetch("/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ username, password })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById("result").textContent = data.name + "님 로그인 성공하셨습니다!";
+                    } else {
+                        document.getElementById("result").textContent = "로그인 실패. 아이디 또는 비밀번호를 확인해주세요.";
+                    }
+                })
+                .catch(error => console.error(error));
+        });
+    </script>
 </body>
 
 </html>

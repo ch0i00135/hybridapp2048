@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>2048</title>
     <meta charset="utf-8">
+    <title>2048</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap');
         *{
-            font-family: 'Roboto', sans-serif;
+            font-family: 'Noto Sans KR', sans-serif;
             margin: 0px;
             transition: all;
             transition: 0.1s linear;
@@ -83,8 +83,34 @@
             color: #776E65;
         }        
         a{
+            display: block;
             font-size: 20px;
-            justify-content: space-between;
+            text-align: center;
+            width: 80px;
+        }
+        #username-display{
+            color: #47403a;
+            font-size: 30px;
+            width: 250px;
+            height: 80px;
+            word-wrap: break-word;
+        }
+        form{
+            margin-top: 10px;
+        }
+        #username, #password{
+            width: 160px;
+        }
+        #undertable{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #undertable button{
+            height: 100px;
+            width: 100px;
+            font-size: 30px;
+            display: none;
         }
     </style>
 </head>
@@ -93,7 +119,8 @@
         <div id="top">
             <div id="title">2048 GIMMICK</div>
             <div id="underTitle">
-                <div id="next"><p id="text"></p><p id="arrow"></p></div>
+                <div id="next"><p id="text"></p><p id="arrow"></p></div>                
+                <p id="username-display"></p>
                 <div id="score"><p id="best">Best: 0</p><p id="current">Score: 0</p></div>
             </div>
         </div>
@@ -123,9 +150,21 @@
                 <p id="33"></p>
             </div>
         </div>        
-        <div>
-            <a href="/signup">Signup </a>
-            <a href="/login"> Login</a>
+        <div id="undertable">
+            <div id="loginbox">
+                <form id="loginForm">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" required>
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+                    <input type="submit" value="login">
+                </form>
+            </div>
+            <!-- <a href="/login" id="login">Log in</a> -->
+            <a href="/signup" target='_blank' id="signup">Sign up</a>
+            <a href="/logout" id="logout">Log out</a>
+            <p id="result"></p>
+            <button onclick="gameOver()" id="retry">다시 하기</button>
         </div>        
     </div>    
     <script src="2048.js"></script>    
