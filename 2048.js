@@ -4,7 +4,7 @@ const table = document.getElementById("table");
 const currentText = document.getElementById("current");
 const bestText = document.getElementById("best");
 const usernameDisplay = document.getElementById('username-display');
-const retryBtn=document.getElementById('retry');
+const retryBtn = document.getElementById('retry');
 var loggedinUsername;
 var bestScore;
 var tile = [];
@@ -14,6 +14,9 @@ var ranMoveDir;
 var dontMove;
 var moveChk;
 var score = 0;
+var touchStartX, touchStartY;
+var touchEndX, touchEndY;
+var isRan = false;
 
 class Tile {
     constructor(n, r, c) {
@@ -89,10 +92,10 @@ function genTile(n) {
         let newPos = blankSpaces[randomIndex];
         tile[newPos.row][newPos.col].n = n;
         highlight(newPos.row, newPos.col);
-    }else if(blankSpaces.length===0){
-       if(!canMove()) {
-        retryBtn.style.display='block';
-       }
+    } else if (blankSpaces.length === 0) {
+        if (!canMove()) {
+            retryBtn.style.display = 'block';
+        }
     }
 }
 
@@ -116,16 +119,16 @@ function canMove() {
     return false;
 }
 
-function refresh(){
+function refresh() {
     window.location.replace('http://localhost:3000');
 }
 
-function gameOver(){
-    let newBestScore=parseInt(bestScore.replace(" ",""));
-    if(score>newBestScore){
-        newBestScore=score+"";
-    }else {
-        newBestScore=newBestScore+"";
+function gameOver() {
+    let newBestScore = parseInt(bestScore.replace(" ", ""));
+    if (score > newBestScore) {
+        newBestScore = score + "";
+    } else {
+        newBestScore = newBestScore + "";
     }
     fetch('/gameover', {
         method: 'POST',
@@ -136,10 +139,10 @@ function gameOver(){
     })
         .then(response => response.json())
         .then(data => {
-            if(data.success){
+            if (data.success) {
                 console.log('gameover');
                 refresh();
-            } else{
+            } else {
                 console.log("오류");
             }
         })
@@ -187,8 +190,8 @@ function merge(a1, a2, b1, b2) {
     tile[a1][a2].n *= 2;
     tile[b1][b2].n = 0;
     score++;
-    if(tile[a1][a2].n===2048){
-        score+=1000;
+    if (tile[a1][a2].n === 2048) {
+        score += 1000;
         gameOver();
     }
     moveChk = true;
@@ -200,23 +203,55 @@ function keyUp(e) {
         switch (e.key) {
             case "ArrowUp":
                 MoveUp();
-                genTile(ranTileNum());
                 break;
             case "ArrowRight":
                 MoveRight();
-                genTile(ranTileNum());
                 break;
             case "ArrowDown":
                 MoveDown();
-                genTile(ranTileNum());
                 break;
             case "ArrowLeft":
                 MoveLeft();
-                genTile(ranTileNum());
                 break;
         }
     }
 }
+
+
+document.addEventListener('touchstart', function (event) {
+    touchStartX = event.touches[0].clientX;
+    touchStartY = event.touches[0].clientY;
+});
+
+document.addEventListener('touchmove', function (event) {
+    touchEndX = event.touches[0].clientX;
+    touchEndY = event.touches[0].clientY;
+});
+
+document.addEventListener('touchend', function () {
+    // 이동 방향 계산
+    const deltaX = touchEndX - touchStartX;
+    const deltaY = touchEndY - touchStartY;
+
+    // 이동 방향에 따라 함수 호출
+    if (!dontMove) {
+        if (Math.abs(deltaX) > Math.abs(deltaY)) {
+            // 가로로 이동
+            if (deltaX > 0) {
+                MoveRight();
+            } else {
+                MoveLeft();
+            }
+        } else {
+            // 세로로 이동
+            if (deltaY > 0) {
+                MoveDown();
+            } else {
+                MoveUp();
+            }
+        }
+    }
+});
 
 function move(x, y) {
     table.style.transform = `translate(${x}px, ${y}px)`;
@@ -239,6 +274,7 @@ function ranMove() {
 
 function ranMoveTile() {
     dontMove = false;
+    isRan = true;
     switch (ranMoveDir) {
         case 0:
             MoveUp();
@@ -280,12 +316,17 @@ function MoveUp() {
     if (!moveChk) return;
     ranMoveCount--;
     setAllTile();
+    if (isRan) {
+        isRan = false;
+        return;
+    }
     if (ranMoveCount == 0) {
         dontMove = true;
         setTimeout(() => {
             ranMoveTile();
         }, 500);
     }
+    genTile(ranTileNum());
 }
 function MoveDown() {
     for (let i = tile.length - 2; i >= 0; i--) {
@@ -307,12 +348,17 @@ function MoveDown() {
     if (!moveChk) return;
     ranMoveCount--;
     setAllTile();
+    if (isRan) {
+        isRan = false;
+        return;
+    }
     if (ranMoveCount == 0) {
         dontMove = true;
         setTimeout(() => {
             ranMoveTile();
         }, 500);
     }
+    genTile(ranTileNum());
 }
 function MoveLeft() {
     for (let i = 0; i < tile.length; i++) {
@@ -334,12 +380,17 @@ function MoveLeft() {
     if (!moveChk) return;
     ranMoveCount--;
     setAllTile();
+    if (isRan) {
+        isRan = false;
+        return;
+    }
     if (ranMoveCount == 0) {
         dontMove = true;
         setTimeout(() => {
             ranMoveTile();
         }, 500);
     }
+    genTile(ranTileNum());
 }
 function MoveRight() {
     for (let i = 0; i < tile.length; i++) {
@@ -361,12 +412,17 @@ function MoveRight() {
     if (!moveChk) return;
     ranMoveCount--;
     setAllTile();
+    if (isRan) {
+        isRan = false;
+        return;
+    }
     if (ranMoveCount == 0) {
         dontMove = true;
         setTimeout(() => {
             ranMoveTile();
         }, 500);
     }
+    genTile(ranTileNum());
 }
 // 로그인
 document.getElementById("loginForm").addEventListener("submit", function (event) {
@@ -416,5 +472,5 @@ function pageload() {
     }
     document.getElementById("result").textContent = "";
     bestText.innerText = "Best: " + bestScore;
-    usernameDisplay.textContent = "Username: "+loggedinUsername;
+    usernameDisplay.textContent = "Username: " + loggedinUsername;
 }
