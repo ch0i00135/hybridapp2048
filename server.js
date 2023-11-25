@@ -13,12 +13,10 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/2048.html');
 });
 
-// 가입 페이지 라우트
 app.get('/signup', (req, res) => {
     res.sendFile(__dirname + '/signup.html');
 });
 
-// 로그인 페이지 라우트
 app.get('/login', (req, res) => {
     res.sendFile(__dirname + '/login.html');
 });
