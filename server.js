@@ -46,7 +46,7 @@ app.post('/signup', (req, res) => {
     const { username, password } = req.body;
 
     if (isUsernameTaken(username)) {
-        res.json({ success: false });
+        res.status(400).json({ success: false });
     } else {
         const accounts = loadAccounts();
         accounts.push({ username, password, "best": "0" });

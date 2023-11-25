@@ -66,7 +66,7 @@
                 .then(response => response.json())
                 .then(data => {
                     if(data.success){
-                        window.location.replace('http://localhost:3000');
+                        window.close();
                     } else{
                         document.getElementById('error').textContent = '중복된 Username입니다.';
                     }

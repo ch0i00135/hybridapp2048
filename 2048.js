@@ -91,7 +91,7 @@ function genTile(n) {
         highlight(newPos.row, newPos.col);
     }else if(blankSpaces.length===0){
        if(!canMove()) {
-        gameOver();
+        retryBtn.style.display='block';
        }
     }
 }
@@ -121,10 +121,6 @@ function refresh(){
 }
 
 function gameOver(){
-    if(loggedinUsername == 'Guest') {
-        retryBtn.style.display='block';
-        return;
-    }    
     let newBestScore=parseInt(bestScore.replace(" ",""));
     if(score>newBestScore){
         newBestScore=score+"";
@@ -191,6 +187,10 @@ function merge(a1, a2, b1, b2) {
     tile[a1][a2].n *= 2;
     tile[b1][b2].n = 0;
     score++;
+    if(tile[a1][a2].n===2048){
+        score+=1000;
+        gameOver();
+    }
     moveChk = true;
 }
 
@@ -368,7 +368,7 @@ function MoveRight() {
         }, 500);
     }
 }
-// login
+// 로그인
 document.getElementById("loginForm").addEventListener("submit", function (event) {
     event.preventDefault();
     const username = document.getElementById("username").value;
@@ -414,7 +414,7 @@ function pageload() {
         document.getElementById('signup').style.display = 'block';
         document.getElementById('logout').style.display = 'none';
     }
-
+    document.getElementById("result").textContent = "";
     bestText.innerText = "Best: " + bestScore;
     usernameDisplay.textContent = "Username: "+loggedinUsername;
 }

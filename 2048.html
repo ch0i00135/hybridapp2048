@@ -111,6 +111,7 @@
             width: 100px;
             font-size: 30px;
             display: none;
+            margin: 20px;
         }
     </style>
 </head>
@@ -160,12 +161,14 @@
                     <input type="submit" value="login">
                 </form>
             </div>
-            <!-- <a href="/login" id="login">Log in</a> -->
+            <button onclick="gameOver()" id="retry">다시 하기</button>
             <a href="/signup" target='_blank' id="signup">Sign up</a>
             <a href="/logout" id="logout">Log out</a>
             <p id="result"></p>
-            <button onclick="gameOver()" id="retry">다시 하기</button>
-        </div>        
+        </div>  
+        <div id="rule">
+            게임 방법: 화살표 키를 사용하여 타일을 이동하세요. 같은 번호의 타일이 닿으면 하나로 합쳐집니다. 좌측 상단의 숫자가 0이 될때 화살표 방향으로 타일이 이동됩니다.
+        </div>      
     </div>    
     <script src="2048.js"></script>    
 </body>
