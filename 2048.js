@@ -218,17 +218,17 @@ function keyUp(e) {
 }
 
 
-document.addEventListener('touchstart', function (event) {
+table.addEventListener('touchstart', function (event) {
     touchStartX = event.touches[0].clientX;
     touchStartY = event.touches[0].clientY;
 });
 
-document.addEventListener('touchmove', function (event) {
+table.addEventListener('touchmove', function (event) {
     touchEndX = event.touches[0].clientX;
     touchEndY = event.touches[0].clientY;
 });
 
-document.addEventListener('touchend', function () {
+table.addEventListener('touchend', function () {
     // 이동 방향 계산
     const deltaX = touchEndX - touchStartX;
     const deltaY = touchEndY - touchStartY;
